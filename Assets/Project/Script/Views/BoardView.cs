@@ -21,7 +21,8 @@ namespace Gazeus.DesafioMatch3.Views
 
         public void CreateBoard(List<List<Tile>> board)
         {
-            _boardContainer.constraintCount = board[0].Count;
+            SetupGrid(board[0].Count);
+
             _tiles = new GameObject[board.Count][];
             _tileSpots = new TileSpotView[board.Count][];
 
@@ -126,6 +127,14 @@ namespace Gazeus.DesafioMatch3.Views
             (_tiles[toY][toX], _tiles[fromY][fromX]) = (_tiles[fromY][fromX], _tiles[toY][toX]);
 
             return sequence;
+        }
+
+        private void SetupGrid(int columns)
+        {
+            RectTransform parentRectTransform = _boardContainer.GetComponent<RectTransform>();
+            _boardContainer.constraintCount = columns;
+
+            GridResizer.ResizeGrid(_boardContainer, parentRectTransform, columns);
         }
 
         #region Events
