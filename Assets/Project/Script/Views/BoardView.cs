@@ -10,7 +10,7 @@ namespace Gazeus.DesafioMatch3.Views
 {
     public class BoardView : MonoBehaviour
     {
-        public event Action<int, int> TileClicked;
+        public event Action<Vector2Int, Vector2Int> TileSwiped;
 
         [SerializeField] private GridLayoutGroup _boardContainer;
         [SerializeField] private TilePrefabRepository _tilePrefabRepository;
@@ -35,7 +35,7 @@ namespace Gazeus.DesafioMatch3.Views
                     TileSpotView tileSpot = Instantiate(_tileSpotPrefab);
                     tileSpot.transform.SetParent(_boardContainer.transform, false);
                     tileSpot.SetPosition(x, y);
-                    tileSpot.Clicked += TileSpot_Clicked;
+                    tileSpot.Swiped += TileSpot_Swiped;
 
                     _tileSpots[y][x] = tileSpot;
 
@@ -129,9 +129,9 @@ namespace Gazeus.DesafioMatch3.Views
         }
 
         #region Events
-        private void TileSpot_Clicked(int x, int y)
+        private void TileSpot_Swiped(Vector2Int from, Vector2Int to)
         {
-            TileClicked(x, y);
+            TileSwiped?.Invoke(from, to);
         }
         #endregion
     }

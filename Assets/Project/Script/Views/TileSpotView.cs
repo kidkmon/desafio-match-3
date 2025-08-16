@@ -1,15 +1,15 @@
 ﻿using System;
 using DG.Tweening;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Gazeus.DesafioMatch3.Views
 {
+    [RequireComponent(typeof(SwipeInput))]
     public class TileSpotView : MonoBehaviour
     {
-        public event Action<int, int> Clicked;
+        public event Action<Vector2Int, Vector2Int> Swiped;
 
-        [SerializeField] private Button _button;
+        private SwipeInput _swipeInput;
 
         private int _x;
         private int _y;
@@ -17,7 +17,8 @@ namespace Gazeus.DesafioMatch3.Views
         #region Unity
         private void Awake()
         {
-            _button.onClick.AddListener(OnTileClick);
+            _swipeInput = GetComponent<SwipeInput>();
+            _swipeInput.OnSwipeComplete += OnTileSwipe;
         }
         #endregion
 
@@ -41,9 +42,15 @@ namespace Gazeus.DesafioMatch3.Views
             tile.transform.position = transform.position;
         }
 
-        private void OnTileClick()
+        private void OnTileSwipe(Vector2Int direction)
         {
-            Clicked?.Invoke(_x, _y);
+            Vector2Int from = new(_x, _y);
+            Vector2Int to = from + direction;
+
+            if (to.x >= 0 && to.y >= 0)
+            {
+                Swiped?.Invoke(from, to);
+            }
         }
     }
 }
