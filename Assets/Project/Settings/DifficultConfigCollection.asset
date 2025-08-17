@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5362ff075ee5d843a1fc5292a3f045d, type: 3}
+  m_Name: DifficultConfigCollection
+  m_EditorClassIdentifier: 
+  _difficultConfigs:
+  - {fileID: 11400000, guid: 990b1943f34a4db48bc3f0a9bfb89e40, type: 2}
+  - {fileID: 11400000, guid: dddf12d05f2386346b00109e72a43715, type: 2}
+  - {fileID: 11400000, guid: e2a28421a657e5c47bc073b7aaa9289d, type: 2}

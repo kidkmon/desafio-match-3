@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f996dc2b48737248ba0b1260589b1b8, type: 3}
+  m_Name: GameConfig
+  m_EditorClassIdentifier: 
+  _boardHeight: 10
+  _boardWidth: 10
+  _baseScorePerPiece: 10
+  _specialPieceScore: 15
+  _match4BonusMultiplier: 1.5
+  _match5BonusMultiplier: 2
+  _matchTLBonusMultiplier: 2
+  _comboIncrement: 1

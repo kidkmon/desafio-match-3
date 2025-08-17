@@ -11,8 +11,6 @@ namespace Gazeus.DesafioMatch3.Controllers
     public class GameController : MonoBehaviour
     {
         [SerializeField] private BoardView _boardView;
-        [SerializeField] private int _boardHeight = 10;
-        [SerializeField] private int _boardWidth = 10;
 
         private GameService _gameEngine;
         private bool _isAnimating;
@@ -31,7 +29,10 @@ namespace Gazeus.DesafioMatch3.Controllers
 
         private void Start()
         {
-            List<List<Tile>> board = _gameEngine.StartGame(_boardWidth, _boardHeight);
+            List<List<Tile>> board = _gameEngine.StartGame();
+            DifficultConfig config = EnvironmentConfigs.Instance.DifficultConfigCollection.GetConfigByDifficulty(EnvironmentConfigs.Instance.Level);
+
+            EnvironmentConfigs.Instance.TileAssetCollection.InitializeRandomTiles(config.ColorQuantity);
             _boardView.CreateBoard(board);
         }
         #endregion

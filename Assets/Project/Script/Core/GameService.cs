@@ -39,9 +39,18 @@ namespace Gazeus.DesafioMatch3.Core
             return false;
         }
 
-        public List<List<Tile>> StartGame(int boardWidth, int boardHeight)
+        public List<List<Tile>> StartGame()
         {
-            _tilesTypes = new List<int> { 0, 1, 2, 3 };
+            int boardWidth = EnvironmentConfigs.Instance.GameConfig.BoardWidth;
+            int boardHeight = EnvironmentConfigs.Instance.GameConfig.BoardHeight;
+            int colorQuantity = EnvironmentConfigs.Instance.DifficultConfigCollection.GetConfigByDifficulty(EnvironmentConfigs.Instance.Level).ColorQuantity;
+
+            _tilesTypes = new List<int>();
+            for (int i = 0; i < colorQuantity; i++)
+            {
+                _tilesTypes.Add(i);
+            }
+
             _boardTiles = CreateBoard(boardWidth, boardHeight, _tilesTypes);
 
             return _boardTiles;

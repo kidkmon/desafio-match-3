@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using DG.Tweening;
 using Gazeus.DesafioMatch3.Models;
-using Gazeus.DesafioMatch3.ScriptableObjects;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,7 +12,6 @@ namespace Gazeus.DesafioMatch3.Views
         public event Action<Vector2Int, Vector2Int> TileSwiped;
 
         [SerializeField] private GridLayoutGroup _boardContainer;
-        [SerializeField] private TilePrefabRepository _tilePrefabRepository;
         [SerializeField] private TileSpotView _tileSpotPrefab;
 
         private GameObject[][] _tiles;
@@ -43,11 +41,9 @@ namespace Gazeus.DesafioMatch3.Views
                     int tileTypeIndex = board[y][x].Type;
                     if (tileTypeIndex > -1)
                     {
-                        GameObject tilePrefab = _tilePrefabRepository.TileTypePrefabList[tileTypeIndex];
-                        GameObject tile = Instantiate(tilePrefab);
-                        tileSpot.SetTile(tile);
+                        tileSpot.SetColorTile(EnvironmentConfigs.Instance.TileAssetCollection.AvailableTileAssets[tileTypeIndex].Color);
 
-                        _tiles[y][x] = tile;
+                        _tiles[y][x] = tileSpot.Tile;
                     }
                 }
             }
@@ -63,14 +59,13 @@ namespace Gazeus.DesafioMatch3.Views
 
                 TileSpotView tileSpot = _tileSpots[position.y][position.x];
 
-                GameObject tilePrefab = _tilePrefabRepository.TileTypePrefabList[addedTileInfo.Type];
-                GameObject tile = Instantiate(tilePrefab);
-                tileSpot.SetTile(tile);
+                tileSpot.SetColorTile(EnvironmentConfigs.Instance.TileAssetCollection.AvailableTileAssets[addedTileInfo.Type].Color);
 
-                _tiles[position.y][position.x] = tile;
+                _tiles[position.y][position.x] = tileSpot.Tile;
 
-                tile.transform.localScale = Vector2.zero;
-                sequence.Join(tile.transform.DOScale(1.0f, 0.2f));
+                tileSpot.ResetTilePosition();
+                tileSpot.Tile.transform.localScale = Vector2.zero;
+                sequence.Join(tileSpot.Tile.transform.DOScale(1.0f, 0.2f));
             }
 
             return sequence;
@@ -81,8 +76,7 @@ namespace Gazeus.DesafioMatch3.Views
             for (int i = 0; i < matchedPosition.Count; i++)
             {
                 Vector2Int position = matchedPosition[i];
-                Destroy(_tiles[position.y][position.x]);
-                _tiles[position.y][position.x] = null;
+                _tiles[position.y][position.x].gameObject.GetComponent<Image>().color = Color.clear;
             }
 
             return DOVirtual.DelayedCall(0.2f, () => { });
@@ -111,6 +105,8 @@ namespace Gazeus.DesafioMatch3.Views
                 sequence.Join(_tileSpots[to.y][to.x].AnimatedSetTile(_tiles[from.y][from.x]));
 
                 tiles[to.y][to.x] = _tiles[from.y][from.x];
+                _tileSpots[to.y][to.x].ResetTilePosition();
+                _tileSpots[from.y][from.x].ResetTilePosition();
             }
 
             _tiles = tiles;
