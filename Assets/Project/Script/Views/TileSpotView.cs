@@ -67,7 +67,7 @@ namespace Gazeus.DesafioMatch3.Views
             Vector2Int from = new(_x, _y);
             Vector2Int to = from + direction;
 
-            if (to.x >= 0 && to.y >= 0)
+            if (to.x >= 0 && to.y >= 0 && to.x < EnvironmentConfigs.Instance.GameConfig.BoardWidth && to.y < EnvironmentConfigs.Instance.GameConfig.BoardHeight)
             {
                 Swiped?.Invoke(from, to);
             }

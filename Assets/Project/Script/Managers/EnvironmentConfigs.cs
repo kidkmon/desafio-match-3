@@ -18,7 +18,7 @@ namespace Gazeus.DesafioMatch3
         {
             _difficultConfigCollection.Initialize();
         }
-        
+
         public void SetDifficultyLevel(DifficultyLevel level)
         {
             Level = level;
