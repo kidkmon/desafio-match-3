@@ -64,7 +64,8 @@ namespace Gazeus.DesafioMatch3.Views
                 _tiles[position.y][position.x] = tileSpot.Tile;
 
                 tileSpot.Tile.transform.localScale = Vector2.zero;
-                sequence.Join(tileSpot.Tile.transform.DOScale(1.0f, 0.2f)).onComplete += () => tileSpot.ResetTilePosition();
+                sequence.Join(tileSpot.Tile.transform.DOScale(1.0f, 0.75f)).SetEase(Ease.OutCubic);
+                sequence.Join(tileSpot.Tile.transform.DORotate(new Vector3(0, 0, 360), 1f, RotateMode.LocalAxisAdd)).onComplete += () => tileSpot.ResetTilePosition();
             }
 
             return sequence;
