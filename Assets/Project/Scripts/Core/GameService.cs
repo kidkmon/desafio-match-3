@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Numerics;
 using Gazeus.DesafioMatch3.Models;
 using UnityEngine;
 
@@ -224,9 +225,9 @@ namespace Gazeus.DesafioMatch3.Core
 
                         // Check for T or L shape matches
                         bool isTLShapeMatch = false;
-                        foreach (var pos in verticalMatch.MatchedPositions)
+                        foreach (Vector2Int pos in verticalMatch.MatchedPositions)
                         {
-                            foreach (var existingMatch in matches)
+                            foreach (MatchTile existingMatch in matches)
                             {
                                 if (existingMatch.MatchedPositions.Contains(pos))
                                 {
@@ -273,6 +274,7 @@ namespace Gazeus.DesafioMatch3.Core
                     }
                     else if (match.MatchSize >= 5)
                     {
+                        match.IsClearTileMatch = true;
                         matchScore = match.MatchSize * gameConfig.BaseScorePerPiece * gameConfig.Match5BonusMultiplier;
                     }
                 }
@@ -286,19 +288,46 @@ namespace Gazeus.DesafioMatch3.Core
         private List<Vector2Int> ClearMatchedTiles(List<List<Tile>> board, List<MatchTile> matches)
         {
             List<Vector2Int> clearedPositions = new();
-            foreach (var match in matches)
+            foreach (MatchTile match in matches)
             {
-                clearedPositions.AddRange(match.MatchedPositions);
+                if (match.IsClearTileMatch)
+                {
+                    // Clear entire row or column
+                    Vector2Int firstPos = match.MatchedPositions[0];
+                    Vector2Int secondPos = match.MatchedPositions[1];
+
+                    if (firstPos.x != secondPos.x && firstPos.y == secondPos.y) // Row match
+                    {
+                        for (int x = 0; x < board[0].Count; x++)
+                        {
+                            clearedPositions.Add(new Vector2Int(x, firstPos.y));
+                        }
+                        Debug.Log($"Clearing row at y: {firstPos.y}");
+                    }
+                    else if (firstPos.y != secondPos.y && firstPos.x == firstPos.x) // Column match
+                    {
+                        for (int y = 0; y < board.Count; y++)
+                        {
+                            clearedPositions.Add(new Vector2Int(firstPos.x, y));
+                        }
+                        Debug.Log($"Clearing column at x: {firstPos.x}");
+                    }
+                }
+                else
+                {
+                    clearedPositions.AddRange(match.MatchedPositions);
+                }
             }
 
             clearedPositions = new List<Vector2Int>(new HashSet<Vector2Int>(clearedPositions)); // Remove duplicates
 
-            foreach (var pos in clearedPositions)
+            foreach (Vector2Int pos in clearedPositions)
             {
                 board[pos.y][pos.x] = new Tile { Id = -1, Type = -1 };
             }
 
             return clearedPositions;
+
         }
 
         private List<MovedTileInfo> DropTiles(List<List<Tile>> board, List<Vector2Int> clearedPositions)
