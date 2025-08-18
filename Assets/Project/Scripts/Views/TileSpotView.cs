@@ -35,7 +35,7 @@ namespace Gazeus.DesafioMatch3.Views
             tile.GetComponentInParent<TileSpotView>().SetTileImage(currentImage);
             tile.transform.SetParent(transform);
             tile.transform.DOKill();
-
+    
             return tile.transform.DOMove(transform.position, 0.3f);
         }
 

@@ -63,9 +63,8 @@ namespace Gazeus.DesafioMatch3.Views
 
                 _tiles[position.y][position.x] = tileSpot.Tile;
 
-                tileSpot.ResetTilePosition();
                 tileSpot.Tile.transform.localScale = Vector2.zero;
-                sequence.Join(tileSpot.Tile.transform.DOScale(1.0f, 0.2f));
+                sequence.Join(tileSpot.Tile.transform.DOScale(1.0f, 0.2f)).onComplete += () => tileSpot.ResetTilePosition();
             }
 
             return sequence;
@@ -73,7 +72,6 @@ namespace Gazeus.DesafioMatch3.Views
 
         public Tween DestroyTiles(List<Vector2Int> matchedPosition, int totalMatchScore)
         {
-
             for (int i = 0; i < matchedPosition.Count; i++)
             {
                 Vector2Int position = matchedPosition[i];
