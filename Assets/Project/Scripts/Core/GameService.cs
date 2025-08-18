@@ -302,7 +302,6 @@ namespace Gazeus.DesafioMatch3.Core
                         {
                             clearedPositions.Add(new Vector2Int(x, firstPos.y));
                         }
-                        Debug.Log($"Clearing row at y: {firstPos.y}");
                     }
                     else if (firstPos.y != secondPos.y && firstPos.x == firstPos.x) // Column match
                     {
@@ -310,7 +309,6 @@ namespace Gazeus.DesafioMatch3.Core
                         {
                             clearedPositions.Add(new Vector2Int(firstPos.x, y));
                         }
-                        Debug.Log($"Clearing column at x: {firstPos.x}");
                     }
                 }
                 else

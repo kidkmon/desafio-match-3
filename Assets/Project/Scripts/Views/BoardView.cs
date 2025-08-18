@@ -76,6 +76,7 @@ namespace Gazeus.DesafioMatch3.Views
             {
                 Vector2Int position = matchedPosition[i];
                 _tiles[position.y][position.x].gameObject.GetComponent<Image>().color = Color.clear;
+                _tileSpots[position.y][position.x].PlayExplosionEffect();
             }
 
             return DOVirtual.DelayedCall(0.2f, () =>

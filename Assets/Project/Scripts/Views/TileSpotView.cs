@@ -12,6 +12,10 @@ namespace Gazeus.DesafioMatch3.Views
 
         [SerializeField] private Image _tileImage;
 
+        [Header("VFX References")]
+        [SerializeField] private ParticleSystem _explosionEffect;
+        [SerializeField] private ParticleSystem _debrisEffect;
+
         private SwipeInput _swipeInput;
 
         private int _x;
@@ -60,6 +64,13 @@ namespace Gazeus.DesafioMatch3.Views
             _tileImage.rectTransform.offsetMin = new Vector2(_tileImage.rectTransform.offsetMin.x, 4);
             _tileImage.rectTransform.offsetMax = new Vector2(_tileImage.rectTransform.offsetMax.x, -4);
         }
+
+        public void PlayExplosionEffect()
+        {
+            _explosionEffect.Play();
+            _debrisEffect.Play();
+        }
+
         public GameObject Tile => _tileImage.gameObject;
 
         private void OnTileSwipe(Vector2Int direction)
