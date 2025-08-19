@@ -19,7 +19,9 @@ namespace Gazeus.DesafioMatch3
         {
             File.AppendAllText(_logFilePath, $"Log started at: {DateTime.Now}\n\n");
 
+#if UNITY_EDITOR
             Debug.Log($"Local Log file saved in: {Application.persistentDataPath}");
+#endif
         }
 
         void OnDestroy()
@@ -36,7 +38,9 @@ namespace Gazeus.DesafioMatch3
             // Write to file
             File.AppendAllText(_logFilePath, formattedMessage + "\n");
 
+#if UNITY_EDITOR
             Debug.Log(formattedMessage);
+#endif
         }
 
         #region Event Logs Methods
