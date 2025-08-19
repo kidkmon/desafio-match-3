@@ -8,13 +8,13 @@ namespace Gazeus.DesafioMatch3
     public class StartScreenView : MonoBehaviour
     {
         [Header("UI References")]
-        [SerializeField] private Image _blackPanel;
         [SerializeField] private Image _backgroundImage;
+        [SerializeField] private RectTransform _blackCircle;
         [SerializeField] private RectTransform _bombTransform;
         [SerializeField] private RectTransform _startMenuTransform;
+        [SerializeField] private float _blackCircleInitialScale = 1f;
         [SerializeField] private float _bombFallVelocity = 2f;
         [SerializeField] private float _explosionTime = 0.5f;
-        [SerializeField] private float _fadeOutTime = 1f;
         [SerializeField] private float _shakeMenuForce = 10f;
         [SerializeField] private float _shakeMenuDuration = 0.7f;
 
@@ -44,9 +44,11 @@ namespace Gazeus.DesafioMatch3
             _canvasRect = GetComponent<RectTransform>();
             _centerScreen = _canvasRect.rect.center;
 
-            _backgroundImage.gameObject.SetActive(false);
             _startMenuTransform.gameObject.SetActive(false);
-            _blackPanel.gameObject.SetActive(true);
+
+            _blackCircle.localScale = Vector3.one * _blackCircleInitialScale;
+            _blackCircle.gameObject.SetActive(true);
+            _backgroundImage.gameObject.SetActive(true);
 
             _bombTransform.anchoredPosition = new Vector2(_centerScreen.x, _canvasRect.rect.height / 2f + _bombTransform.rect.height);
             _bombTransform.gameObject.SetActive(true);
@@ -60,12 +62,8 @@ namespace Gazeus.DesafioMatch3
         {
             Sequence sequence = DOTween.Sequence();
 
-            // Fade in black screen
-            //sequencia.Append(telaPreta.DOFade(0f, tempoFadeOutTelaPreta).SetEase(Ease.OutQuad));
-            sequence.AppendCallback(() => _blackPanel.gameObject.SetActive(false));
-
-            // Bomb falling animation
-            sequence.Append(_bombTransform.DOMoveY(_centerScreen.y, _bombFallVelocity).SetEase(Ease.InCubic));
+            sequence.Append(_blackCircle.DOScale(0, _bombFallVelocity).SetEase(Ease.OutQuad));
+            sequence.Join(_bombTransform.DOMoveY(_centerScreen.y, _bombFallVelocity).SetEase(Ease.InCubic));
 
             sequence.AppendCallback(() =>
             {
@@ -117,17 +115,19 @@ namespace Gazeus.DesafioMatch3
 
         private void StartGameAnimation()
         {
-            _startMenuTransform.gameObject.SetActive(false);
-            _blackPanel.gameObject.SetActive(false);
             _bombTransform.gameObject.SetActive(false);
-            _backgroundImage.gameObject.SetActive(false);
-            ScreenManager.Instance.ShowGameScreen();
-            HUDManager.Instance.UpdateLevelUI(GameManager.Instance.Level);
-            // _blackPanel.DOFade(1f, _fadeOutTime).SetEase(Ease.InQuad).OnComplete(() =>
-            // {
-            //     AudioManager.Instance.PlayBackgroundMusic();
-            //     _blackPanel.gameObject.SetActive(false);
-            // });
+            _startMenuTransform.gameObject.SetActive(false);
+
+            _blackCircle.DOScale(Vector3.one * _blackCircleInitialScale, 1).SetEase(Ease.OutQuad)
+                .OnComplete(() =>
+                {
+                    _blackCircle.gameObject.SetActive(false);
+                    _backgroundImage.gameObject.SetActive(false);
+
+                    ScreenManager.Instance.ShowGameScreen();
+                    HUDManager.Instance.UpdateLevelUI(GameManager.Instance.Level);
+                });
+
         }
     }
 }
