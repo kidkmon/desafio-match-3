@@ -17,7 +17,7 @@ namespace Gazeus.DesafioMatch3
 
         void InitializeLogFile()
         {
-            File.AppendAllText(_logFilePath, $"Log started at: {DateTime.Now}\n\n");
+            File.AppendAllText(_logFilePath, $"--- Log started at: {DateTime.Now} ---\n\n");
 
 #if UNITY_EDITOR
             Debug.Log($"Local Log file saved in: {Application.persistentDataPath}");
@@ -26,7 +26,7 @@ namespace Gazeus.DesafioMatch3
 
         void OnDestroy()
         {
-            File.AppendAllText(_logFilePath, $"\n\nLog ended at: {DateTime.Now}\n------------------------------------------------------------------------\n\n");
+            File.AppendAllText(_logFilePath, $"\n\n--- Log ended at: {DateTime.Now} ---\n\n");
         }
 
         // Basic logging method
