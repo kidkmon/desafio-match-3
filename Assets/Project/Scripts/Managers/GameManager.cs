@@ -19,7 +19,7 @@ namespace Gazeus.DesafioMatch3
 
         private void Start()
         {
-            Level = 1;
+            SetGameLevel(DifficultyLevel.Easy, 1);
         }
 
         private void SetGameLevel(DifficultyLevel difficulty, int level)
@@ -35,16 +35,30 @@ namespace Gazeus.DesafioMatch3
             _gameController.StartLevel(difficulty);
 
             LevelConfig levelConfig = EnvironmentConfigs.Instance.LevelConfigCollection.GetLevel(level);
-            _levelController.ClearLevel();
-            _levelController.SetupLevel(levelConfig);
+
+            if (levelConfig != null)
+            {
+                _levelController.ClearLevel();
+                _levelController.SetupLevel(levelConfig);
+            }
+            else
+            {
+                AudioManager.Instance.PlayLevelWinSound();
+                ScreenManager.Instance.ShowEndScreen();
+            }
         }
 
         #region Public Methods
 
-        public void StartNewGame(DifficultyLevel difficulty, int level)
+
+        public void ResetStatus()
+        {
+            SetGameLevel(DifficultyLevel.Easy, 1);
+        }
+        public void StartNewGame(DifficultyLevel difficulty, int level, bool isBegin = false)
         {
             SetGameLevel(difficulty, level);
-            Life = EnvironmentConfigs.Instance.GameConfig.InitialLife;
+            Life = isBegin ? EnvironmentConfigs.Instance.GameConfig.InitialLife : Life;
 
             SetupNewGame(difficulty, level);
 
@@ -90,7 +104,15 @@ namespace Gazeus.DesafioMatch3
 
         public void UpdateLeftMoves()
         {
-            _levelController.UpdateLeftMoves();
+            if (!_levelController.CanUpdateLeftMoves())
+            {
+                _gameController.ShowLostPopup();
+            }
+        }
+
+        public void IncreaseLeftMoves()
+        {
+            _levelController.IncreaseLeftMoves();
         }
 
         #endregion

@@ -1,6 +1,7 @@
 using System;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Gazeus.DesafioMatch3
 {
@@ -14,13 +15,14 @@ namespace Gazeus.DesafioMatch3
         [Header("Popup Settings")]
         [SerializeField] private RectTransform _winPopup;
         [SerializeField] private RectTransform _losePopup;
-        [SerializeField] private GameObject _retryButton;
+        [SerializeField] private Button _retryButton;
         [SerializeField] private float _popupVelocity;
 
         private RectTransform _canvasRect;
         private Vector2 _centerScreen;
 
         private Action _onNextLevelCallback;
+        private Action _onContinueLevelCallback;
 
         private void Start()
         {
@@ -58,14 +60,16 @@ namespace Gazeus.DesafioMatch3
             _onNextLevelCallback = onNextLevelCallback;
         }
 
-        public void ShowLosePopup()
+        public void ShowLostPopup(Action onContinueCallback)
         {
             ShowPopup(_losePopup);
-            _retryButton.SetActive(GameManager.Instance.CanDecreaseLife());
+            _retryButton.interactable = GameManager.Instance.CanDecreaseLife();
+            _onContinueLevelCallback = onContinueCallback;
         }
 
-        public void HomeButtonClick()
+        public void OnHomeButtonClicked()
         {
+            AudioManager.Instance.PlayClickSound();
             HidePopup(_winPopup);
             HidePopup(_losePopup);
             StartTransitionAnimation(() =>
@@ -75,16 +79,20 @@ namespace Gazeus.DesafioMatch3
             }, true);
         }
 
-        public void NextLevelClick()
+        public void OnNextLevelClicked()
         {
+            AudioManager.Instance.PlayClickSound();
             HidePopup(_winPopup);
             StartTransitionAnimation(() => _onNextLevelCallback?.Invoke(), false);
         }
 
-        public void ContinueLevelClick()
+        public void OnContinueLevelClicked()
         {
+            AudioManager.Instance.PlayClickSound();
             HidePopup(_losePopup);
             GameManager.Instance.DecreaseLife();
+            GameManager.Instance.IncreaseLeftMoves();
+            _onContinueLevelCallback?.Invoke();
         }
 
         public void StartTransitionAnimation(Action onAnimationComplete, bool fastEnd)

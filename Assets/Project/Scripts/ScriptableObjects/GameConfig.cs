@@ -18,6 +18,8 @@ namespace Gazeus.DesafioMatch3
 
         [Header("Life Settings")]
         [SerializeField] private int _initialLife = 3;
+        [SerializeField] private int _movesToIncrease = 3;
+
 
         public int BoardHeight => _boardHeight;
         public int BoardWidth => _boardWidth;
@@ -29,5 +31,6 @@ namespace Gazeus.DesafioMatch3
         public float MatchTLBonusMultiplier => _matchTLBonusMultiplier;
 
         public int InitialLife => _initialLife;
+        public int MovesToIncrease => _movesToIncrease;
     }
 }

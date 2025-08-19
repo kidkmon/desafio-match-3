@@ -51,7 +51,11 @@ namespace Gazeus.DesafioMatch3.Controllers
         public void ShowLostPopup()
         {
             _isPlaying = false;
-            _gameScreenView.ShowLosePopup();
+            _gameScreenView.ShowLostPopup(() =>
+            {
+                _isPlaying = true;
+                _isAnimating = false;
+            });
         }
 
         private void AnimateBoard(List<BoardSequence> boardSequences, int index, Action onComplete)

@@ -55,17 +55,23 @@ namespace Gazeus.DesafioMatch3
             }
         }
 
-        public void UpdateLeftMoves()
+        public bool CanUpdateLeftMoves()
         {
             if (_leftMoves - 1 > 0)
             {
                 _leftMoves -= 1;
-                _leftMovesText.text = $"Left Moves: {_leftMoves}";
+                UpdateLeftMoves(_leftMoves);
+                return true;
             }
-            else
-            {
-                ScreenManager.Instance.ShowEndScreen();
-            }
+
+            UpdateLeftMoves(0);
+            return false;
+        }
+
+        public void IncreaseLeftMoves()
+        {
+            _leftMoves += EnvironmentConfigs.Instance.GameConfig.MovesToIncrease;
+            UpdateLeftMoves(_leftMoves);
         }
 
         private void CheckLevelStatus()
@@ -83,6 +89,12 @@ namespace Gazeus.DesafioMatch3
                 if (!goalView.GoalCompleted) return false;
             }
             return true;
+        }
+
+        private void UpdateLeftMoves(int leftMoves)
+        {
+            _leftMoves = leftMoves;
+            _leftMovesText.text = $"Left Moves: {_leftMoves}";
         }
     }
 }

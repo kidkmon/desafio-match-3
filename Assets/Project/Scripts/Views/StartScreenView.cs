@@ -127,7 +127,7 @@ namespace Gazeus.DesafioMatch3
                     _backgroundImage.gameObject.SetActive(false);
 
                     ScreenManager.Instance.ShowGameScreen();
-                    GameManager.Instance.StartNewGame(_currentDifficulty, GameManager.Instance.Level);
+                    GameManager.Instance.StartNewGame(_currentDifficulty, GameManager.Instance.Level, true);
 
                     AudioManager.Instance.PlayBackgroundMusic();
                 });

@@ -6,7 +6,7 @@ namespace Gazeus.DesafioMatch3
     {
         [SerializeField] private StartScreenView _startScreen;
         [SerializeField] private GameScreenView _gameScreen;
-        [SerializeField] private GameObject _endScreen;
+        [SerializeField] private EndScreenView _endScreen;
 
         private void Start()
         {
@@ -17,7 +17,7 @@ namespace Gazeus.DesafioMatch3
         {
             _startScreen.gameObject.SetActive(true);
             _gameScreen.gameObject.SetActive(false);
-            _endScreen.SetActive(false);
+            _endScreen.gameObject.SetActive(false);
             _startScreen.PlayMenuAnimation();
         }
 
@@ -25,14 +25,15 @@ namespace Gazeus.DesafioMatch3
         {
             _startScreen.gameObject.SetActive(false);
             _gameScreen.gameObject.SetActive(true);
-            _endScreen.SetActive(false);
+            _endScreen.gameObject.SetActive(false);
         }
 
         public void ShowEndScreen()
         {
             _startScreen.gameObject.SetActive(false);
             _gameScreen.gameObject.SetActive(true);
-            _endScreen.SetActive(true);
+            _endScreen.gameObject.SetActive(true);
+            _endScreen.ShowEndPopup();
         }
     }
 }
