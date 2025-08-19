@@ -38,7 +38,17 @@ namespace Gazeus.DesafioMatch3
 
             _canvasRect = GetComponent<RectTransform>();
             _centerScreen = _canvasRect.rect.center;
+        }
 
+        public void PlayMenuAnimation()
+        {
+            AudioManager.Instance.PlayIntroSound();
+            SetupStartMenuAnimation();
+            StartMenuAnimation();
+        }
+
+        private void SetupStartMenuAnimation()
+        {
             _startMenuTransform.gameObject.SetActive(false);
 
             _blackCircle.localScale = Vector3.one * _blackCircleInitialScale;
@@ -49,8 +59,6 @@ namespace Gazeus.DesafioMatch3
             _bombTransform.gameObject.SetActive(true);
 
             _difficultyText.text = _currentDifficulty.ToString();
-
-            StartMenuAnimation();
         }
 
         private void StartMenuAnimation()
@@ -119,7 +127,7 @@ namespace Gazeus.DesafioMatch3
                     _backgroundImage.gameObject.SetActive(false);
 
                     ScreenManager.Instance.ShowGameScreen();
-                    GameManager.Instance.StartGame(_currentDifficulty, GameManager.Instance.Level);
+                    GameManager.Instance.StartNewGame(_currentDifficulty, GameManager.Instance.Level);
 
                     AudioManager.Instance.PlayBackgroundMusic();
                 });

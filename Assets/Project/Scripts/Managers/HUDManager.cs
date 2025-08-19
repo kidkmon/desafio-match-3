@@ -8,17 +8,21 @@ namespace Gazeus.DesafioMatch3
         [Header("UI Elements")]
         [SerializeField] TextMeshProUGUI _scoreText;
         [SerializeField] TextMeshProUGUI _levelText;
-        [SerializeField] TextMeshProUGUI _heartText;
+        [SerializeField] TextMeshProUGUI _lifeText;
 
         void OnEnable()
         {
             ScoreSystem.Instance.OnScoreUpdated.AddListener(UpdateScoreUI);
+            GameManager.Instance.OnLevelUpdated.AddListener(UpdateLevelUI);
+            GameManager.Instance.OnLifeUpdated.AddListener(UpdateLifeUI);
             ScoreSystem.Instance.Initialize();
         }
 
         void OnDisable()
         {
             ScoreSystem.Instance.OnScoreUpdated.RemoveListener(UpdateScoreUI);
+            GameManager.Instance.OnLevelUpdated.RemoveListener(UpdateLevelUI);
+            GameManager.Instance.OnLifeUpdated.RemoveListener(UpdateLifeUI);
         }
 
         void UpdateScoreUI(int score) => _scoreText.text = score.ToString();
@@ -28,9 +32,9 @@ namespace Gazeus.DesafioMatch3
             _levelText.text = $"Level {level}";
         }
 
-        public void UpdateHeartUI(int value)
+        public void UpdateLifeUI(int value)
         {
-            _heartText.text = value.ToString();
+            _lifeText.text = value.ToString();
         }
 
     }

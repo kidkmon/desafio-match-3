@@ -11,9 +11,11 @@ namespace Gazeus.DesafioMatch3.Controllers
     public class GameController : MonoBehaviour
     {
         [SerializeField] private BoardView _boardView;
+        [SerializeField] private GameScreenView _gameScreenView;
 
         private GameService _gameEngine;
         private bool _isAnimating;
+        private bool _isPlaying;
 
         #region Unity
         private void Awake()
@@ -29,13 +31,27 @@ namespace Gazeus.DesafioMatch3.Controllers
 
         #endregion
 
-        public void StartLevel(DifficultyLevel difficulty, int level)
+        public void StartLevel(DifficultyLevel difficulty)
         {
+            _isAnimating = false;
+            _isPlaying = true;
             List<List<Tile>> board = _gameEngine.StartGame();
             DifficultConfig config = EnvironmentConfigs.Instance.DifficultConfigCollection.GetConfigByDifficulty(difficulty);
 
             EnvironmentConfigs.Instance.TileAssetCollection.InitializeRandomTiles(config.ColorQuantity);
             _boardView.CreateBoard(board);
+        }
+
+        public void ShowWinPopup(Action onNextLevelCallback)
+        {
+            _isPlaying = false;
+            _gameScreenView.ShowWinPopup(onNextLevelCallback);
+        }
+
+        public void ShowLostPopup()
+        {
+            _isPlaying = false;
+            _gameScreenView.ShowLosePopup();
         }
 
         private void AnimateBoard(List<BoardSequence> boardSequences, int index, Action onComplete)
@@ -50,7 +66,7 @@ namespace Gazeus.DesafioMatch3.Controllers
             index += 1;
             if (index < boardSequences.Count)
             {
-                sequence.onComplete += () => AnimateBoard(boardSequences, index, onComplete);
+                if (_isPlaying) sequence.onComplete += () => AnimateBoard(boardSequences, index, onComplete);
             }
             else
             {
@@ -60,7 +76,7 @@ namespace Gazeus.DesafioMatch3.Controllers
 
         private void OnTileSwipe(Vector2Int from, Vector2Int to)
         {
-            if (_isAnimating) return;
+            if (_isAnimating || !_isPlaying) return;
 
             if (from.x > -1 && from.y > -1)
             {

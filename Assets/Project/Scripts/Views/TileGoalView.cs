@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -6,16 +7,18 @@ namespace Gazeus.DesafioMatch3
 {
     public class TileGoalView : MonoBehaviour
     {
+        public event Action OnGoalCompleted;
+
         [Header("UI References")]
         [SerializeField] private TextMeshProUGUI _tileText;
         [SerializeField] private Image _tileImage;
 
         private int _quantity;
-        private bool _goalComplete;
+        public bool GoalCompleted { get; private set; }
 
         public void Setup(int quantity, Color tileColor)
         {
-            _goalComplete = false;
+            GoalCompleted = false;
             _quantity = quantity;
             _tileImage.color = tileColor;
             UpdateTileUI(_quantity);
@@ -23,7 +26,7 @@ namespace Gazeus.DesafioMatch3
 
         public void DecreaseTileGoal()
         {
-            if (_goalComplete) return;
+            if (GoalCompleted) return;
 
             if (_quantity - 1 > 0)
             {
@@ -45,9 +48,10 @@ namespace Gazeus.DesafioMatch3
         private void CompleteTileGoal()
         {
             _quantity = 0;
-            _goalComplete = true;
+            GoalCompleted = true;
             _tileImage.color = new Color(_tileImage.color.r, _tileImage.color.g, _tileImage.color.b, 0.5f);
             _tileText.color = new Color(1f, 1f, 1f, 0.5f);
+            OnGoalCompleted?.Invoke();
         }
     }
 }

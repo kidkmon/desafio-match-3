@@ -27,6 +27,13 @@ namespace Gazeus.DesafioMatch3.Views
             _swipeInput = GetComponent<SwipeInput>();
             _swipeInput.OnSwipeComplete += OnTileSwipe;
         }
+
+        private void OnDestroy()
+        {
+            _swipeInput.OnSwipeComplete -= OnTileSwipe;
+            Swiped = null;
+        }
+        
         #endregion
 
         public Tween AnimatedSetTile(GameObject tile)
@@ -39,7 +46,7 @@ namespace Gazeus.DesafioMatch3.Views
             tile.GetComponentInParent<TileSpotView>().SetTileImage(currentImage);
             tile.transform.SetParent(transform);
             tile.transform.DOKill();
-    
+
             return tile.transform.DOMove(transform.position, 0.3f);
         }
 

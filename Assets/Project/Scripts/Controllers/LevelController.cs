@@ -32,7 +32,19 @@ namespace Gazeus.DesafioMatch3
                 Color color = EnvironmentConfigs.Instance.TileAssetCollection.AvailableTileAssets[goal.TileId].Color;
                 goalView.Setup(goal.Quantity, color);
                 _tileGoalsDict.Add(goal.TileId, goalView);
+                goalView.OnGoalCompleted += CheckLevelStatus;
             }
+        }
+
+        public void ClearLevel()
+        {
+            foreach (TileGoalView goalView in _tileGoalsDict.Values)
+            {
+                goalView.OnGoalCompleted -= CheckLevelStatus;
+                Destroy(goalView.gameObject);
+            }
+
+            _tileGoalsDict.Clear();
         }
 
         public void UpdateLevelGoal(int id)
@@ -54,6 +66,23 @@ namespace Gazeus.DesafioMatch3
             {
                 ScreenManager.Instance.ShowEndScreen();
             }
+        }
+
+        private void CheckLevelStatus()
+        {
+            if (HasCompletedLevel())
+            {
+                GameManager.Instance.ShowWinPopup();
+            }
+        }
+
+        private bool HasCompletedLevel()
+        {
+            foreach (TileGoalView goalView in _tileGoalsDict.Values)
+            {
+                if (!goalView.GoalCompleted) return false;
+            }
+            return true;
         }
     }
 }

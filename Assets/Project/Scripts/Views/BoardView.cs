@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using DG.Tweening;
 using Gazeus.DesafioMatch3.Models;
 using UnityEngine;
@@ -19,6 +20,7 @@ namespace Gazeus.DesafioMatch3.Views
 
         public void CreateBoard(List<List<Tile>> board)
         {
+            ClearBoard();
             SetupGrid(board[0].Count);
 
             _tiles = new GameObject[board.Count][];
@@ -136,6 +138,20 @@ namespace Gazeus.DesafioMatch3.Views
             _boardContainer.constraintCount = columns;
 
             GridResizer.ResizeGrid(_boardContainer, parentRectTransform, columns);
+        }
+
+        private void ClearBoard()
+        {
+            if (_tiles == null) return;
+
+            for (int y = 0; y < _tiles.Length; y++)
+            {
+                for (int x = 0; x < _tiles[0].Length; x++)
+                {
+                    Destroy(_tiles[y][x].transform.parent.gameObject);
+                    Destroy(_tileSpots[y][x]);
+                }
+            }
         }
 
         #region Events
