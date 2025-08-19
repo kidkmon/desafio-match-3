@@ -4,7 +4,8 @@ namespace Gazeus.DesafioMatch3
 {
     public class GameManager : Singleton<GameManager>
     {
-        public DifficultyLevel Level { get; private set; }
+        public DifficultyLevel Difficulty { get; private set; }
+        public int Level { get; private set; }
 
         void Start()
         {
@@ -13,11 +14,14 @@ namespace Gazeus.DesafioMatch3
 
         #region Public Methods
 
-        public void SetDifficultyLevel(DifficultyLevel level)
+        public void SetGameLevel(DifficultyLevel difficulty, int level = 1)
         {
+            Difficulty = difficulty;
             Level = level;
+
+            LogSystem.Instance.LogStartLevel(level);
         }
-        
+
         #endregion
     }
 }

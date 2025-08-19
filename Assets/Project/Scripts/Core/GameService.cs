@@ -44,7 +44,7 @@ namespace Gazeus.DesafioMatch3.Core
         {
             int boardWidth = EnvironmentConfigs.Instance.GameConfig.BoardWidth;
             int boardHeight = EnvironmentConfigs.Instance.GameConfig.BoardHeight;
-            int colorQuantity = EnvironmentConfigs.Instance.DifficultConfigCollection.GetConfigByDifficulty(GameManager.Instance.Level).ColorQuantity;
+            int colorQuantity = EnvironmentConfigs.Instance.DifficultConfigCollection.GetConfigByDifficulty(GameManager.Instance.Difficulty).ColorQuantity;
 
             _tilesTypes = new List<int>();
             for (int i = 0; i < colorQuantity; i++)
@@ -254,35 +254,36 @@ namespace Gazeus.DesafioMatch3.Core
         private int CalculateTotalMatchScore(List<MatchTile> matches)
         {
             GameConfig gameConfig = EnvironmentConfigs.Instance.GameConfig;
-            float totalScore = 0, matchScore = 0;
+            int totalScore = 0, matchScore = 0;
 
             foreach (MatchTile match in matches)
             {
                 if (match.IsTLShapeMatch)
                 {
-                    matchScore = match.MatchSize * gameConfig.BaseScorePerPiece * gameConfig.MatchTLBonusMultiplier;
+                    matchScore = Mathf.RoundToInt(match.MatchSize * gameConfig.BaseScorePerPiece * gameConfig.MatchTLBonusMultiplier);
                 }
                 else
                 {
                     if (match.MatchSize == 3)
                     {
-                        matchScore = match.MatchSize * gameConfig.BaseScorePerPiece;
+                        matchScore = Mathf.RoundToInt(match.MatchSize * gameConfig.BaseScorePerPiece);
                     }
                     else if (match.MatchSize == 4)
                     {
-                        matchScore = match.MatchSize * gameConfig.BaseScorePerPiece * gameConfig.Match4BonusMultiplier;
+                        matchScore = Mathf.RoundToInt(match.MatchSize * gameConfig.BaseScorePerPiece * gameConfig.Match4BonusMultiplier);
                     }
                     else if (match.MatchSize >= 5)
                     {
                         match.IsClearTileMatch = true;
-                        matchScore = match.MatchSize * gameConfig.BaseScorePerPiece * gameConfig.Match5BonusMultiplier;
+                        matchScore = Mathf.RoundToInt(match.MatchSize * gameConfig.BaseScorePerPiece * gameConfig.Match5BonusMultiplier);
                     }
                 }
 
                 totalScore += matchScore;
+                LogSystem.Instance.LogMatchTile(match.UniqueMatchedPositions, matchScore, match.IsTLShapeMatch, match.IsClearTileMatch);
             }
 
-            return Mathf.RoundToInt(totalScore);
+            return totalScore;
         }
 
         private List<Vector2Int> ClearMatchedTiles(List<List<Tile>> board, List<MatchTile> matches)

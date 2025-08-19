@@ -31,8 +31,8 @@ namespace Gazeus.DesafioMatch3.Controllers
         {
             List<List<Tile>> board = _gameEngine.StartGame();
 
-            GameManager.Instance.SetDifficultyLevel(DifficultyLevel.Easy);
-            DifficultConfig config = EnvironmentConfigs.Instance.DifficultConfigCollection.GetConfigByDifficulty(GameManager.Instance.Level);
+            GameManager.Instance.SetGameLevel(DifficultyLevel.Easy, 1);
+            DifficultConfig config = EnvironmentConfigs.Instance.DifficultConfigCollection.GetConfigByDifficulty(GameManager.Instance.Difficulty);
 
             EnvironmentConfigs.Instance.TileAssetCollection.InitializeRandomTiles(config.ColorQuantity);
             _boardView.CreateBoard(board);
