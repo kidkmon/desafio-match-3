@@ -5,7 +5,9 @@ namespace Gazeus.DesafioMatch3
 {
     public class GameManager : Singleton<GameManager>
     {
+        [Header("Controllers")]
         [SerializeField] private GameController _gameController;
+        [SerializeField] private LevelController _levelController;
 
         public DifficultyLevel Difficulty { get; private set; }
         public int Level { get; private set; }
@@ -29,6 +31,22 @@ namespace Gazeus.DesafioMatch3
         {
             SetGameLevel(difficulty, level);
             _gameController.StartLevel(difficulty, level);
+
+            LevelConfig levelConfig = EnvironmentConfigs.Instance.LevelConfigCollection.GetLevel(level);
+            _levelController.SetupLevel(levelConfig);
+
+            HUDManager.Instance.UpdateLevelUI(level);
+            HUDManager.Instance.UpdateHeartUI(EnvironmentConfigs.Instance.GameConfig.InitialLife);
+        }
+
+        public void UpdateLevelGoal(int id)
+        {
+            _levelController.UpdateLevelGoal(id);
+        }
+
+        public void UpdateLeftMoves()
+        {
+            _levelController.UpdateLeftMoves();
         }
 
         #endregion

@@ -180,6 +180,7 @@ namespace Gazeus.DesafioMatch3.Core
                             if (board[y][i].Type == startTile.Type)
                             {
                                 horizontalMatch.MatchedPositions.Add(new Vector2Int(i, y));
+                                GameManager.Instance.UpdateLevelGoal(board[y][i].Type);
                             }
                             else
                             {
@@ -216,6 +217,7 @@ namespace Gazeus.DesafioMatch3.Core
                             if (board[i][x].Type == startTile.Type)
                             {
                                 verticalMatch.MatchedPositions.Add(new Vector2Int(x, i));
+                                GameManager.Instance.UpdateLevelGoal(board[i][x].Type);
                             }
                             else
                             {

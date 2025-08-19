@@ -8,6 +8,11 @@ namespace Gazeus.DesafioMatch3
         [SerializeField] private GameObject _gameScreen;
         [SerializeField] private GameObject _endScreen;
 
+        private void Start()
+        {
+            ShowStartScreen();   
+        }
+
         public void ShowStartScreen()
         {
             _startScreen.SetActive(true);
@@ -25,7 +30,7 @@ namespace Gazeus.DesafioMatch3
         public void ShowEndScreen()
         {
             _startScreen.SetActive(false);
-            _gameScreen.SetActive(false);
+            _gameScreen.SetActive(true);
             _endScreen.SetActive(true);
         }
     }

@@ -8,6 +8,7 @@ namespace Gazeus.DesafioMatch3
         [Header("UI Elements")]
         [SerializeField] TextMeshProUGUI _scoreText;
         [SerializeField] TextMeshProUGUI _levelText;
+        [SerializeField] TextMeshProUGUI _heartText;
 
         void OnEnable()
         {
@@ -21,10 +22,15 @@ namespace Gazeus.DesafioMatch3
         }
 
         void UpdateScoreUI(int score) => _scoreText.text = score.ToString();
-        
+
         public void UpdateLevelUI(int level)
         {
             _levelText.text = $"Level {level}";
+        }
+
+        public void UpdateHeartUI(int value)
+        {
+            _heartText.text = value.ToString();
         }
 
     }

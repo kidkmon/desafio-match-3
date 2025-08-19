@@ -72,6 +72,7 @@ namespace Gazeus.DesafioMatch3.Controllers
                     {
                         List<BoardSequence> swapResult = _gameEngine.SwapTile(from.x, from.y, to.x, to.y);
                         AnimateBoard(swapResult, 0, () => _isAnimating = false);
+                        GameManager.Instance.UpdateLeftMoves();
                     }
                     else
                     {

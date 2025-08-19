@@ -16,6 +16,8 @@ namespace Gazeus.DesafioMatch3
         [Tooltip("Multiplier for matches of 5 tiles")][SerializeField] private float _match5BonusMultiplier = 2.0f;
         [Tooltip("Multiplier for matches with T and L shapes")][SerializeField] private float _matchTLBonusMultiplier = 2.0f;
 
+        [Header("Life Settings")]
+        [SerializeField] private int _initialLife = 3;
 
         public int BoardHeight => _boardHeight;
         public int BoardWidth => _boardWidth;
@@ -25,5 +27,7 @@ namespace Gazeus.DesafioMatch3
         public float Match4BonusMultiplier => _match4BonusMultiplier;
         public float Match5BonusMultiplier => _match5BonusMultiplier;
         public float MatchTLBonusMultiplier => _matchTLBonusMultiplier;
+
+        public int InitialLife => _initialLife;
     }
 }

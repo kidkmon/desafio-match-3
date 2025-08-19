@@ -32,11 +32,6 @@ namespace Gazeus.DesafioMatch3
 
         private DifficultyLevel _currentDifficulty = DifficultyLevel.Easy;
 
-        private void Awake()
-        {
-            ScreenManager.Instance.ShowStartScreen();
-        }
-
         private void Start()
         {
             DOTween.Init();
@@ -102,7 +97,6 @@ namespace Gazeus.DesafioMatch3
         {
             AudioManager.Instance.PlayClickSound();
             AudioManager.Instance.StopBackgroundMusic();
-            GameManager.Instance.StartGame(_currentDifficulty, GameManager.Instance.Level);
             StartGameAnimation();
         }
 
@@ -125,7 +119,9 @@ namespace Gazeus.DesafioMatch3
                     _backgroundImage.gameObject.SetActive(false);
 
                     ScreenManager.Instance.ShowGameScreen();
-                    HUDManager.Instance.UpdateLevelUI(GameManager.Instance.Level);
+                    GameManager.Instance.StartGame(_currentDifficulty, GameManager.Instance.Level);
+
+                    AudioManager.Instance.PlayBackgroundMusic();
                 });
 
         }
