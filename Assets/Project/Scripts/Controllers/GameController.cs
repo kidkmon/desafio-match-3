@@ -91,8 +91,11 @@ namespace Gazeus.DesafioMatch3.Controllers
                     if (isValid)
                     {
                         List<BoardSequence> swapResult = _gameEngine.SwapTile(from.x, from.y, to.x, to.y);
-                        AnimateBoard(swapResult, 0, () => _isAnimating = false);
-                        GameManager.Instance.UpdateLeftMoves();
+                        AnimateBoard(swapResult, 0, () =>
+                        {
+                            _isAnimating = false;
+                            GameManager.Instance.UpdateLeftMoves();
+                        });
                     }
                     else
                     {

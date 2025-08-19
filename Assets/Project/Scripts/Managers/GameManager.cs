@@ -14,13 +14,8 @@ namespace Gazeus.DesafioMatch3
         [SerializeField] private LevelController _levelController;
 
         public DifficultyLevel Difficulty { get; private set; }
-        public int Level { get; private set; }
+        public int Level { get; private set; } = 1;
         public int Life { get; private set; }
-
-        private void Start()
-        {
-            SetGameLevel(DifficultyLevel.Easy, 1);
-        }
 
         private void SetGameLevel(DifficultyLevel difficulty, int level)
         {
@@ -45,7 +40,14 @@ namespace Gazeus.DesafioMatch3
             {
                 AudioManager.Instance.PlayLevelWinSound();
                 ScreenManager.Instance.ShowEndScreen();
+                LogSystem.Instance.LogEndGame(Level);
             }
+        }
+
+        private void ShowLostPopup()
+        {
+            AudioManager.Instance.PlayLevelLostSound();
+            _gameController.ShowLostPopup();
         }
 
         #region Public Methods
@@ -53,8 +55,10 @@ namespace Gazeus.DesafioMatch3
 
         public void ResetStatus()
         {
-            SetGameLevel(DifficultyLevel.Easy, 1);
+            Difficulty = DifficultyLevel.Easy;
+            Level = 1;
         }
+
         public void StartNewGame(DifficultyLevel difficulty, int level, bool isBegin = false)
         {
             SetGameLevel(difficulty, level);
@@ -91,12 +95,6 @@ namespace Gazeus.DesafioMatch3
 
         }
 
-        public void ShowLostPopup()
-        {
-            AudioManager.Instance.PlayLevelLostSound();
-            _gameController.ShowLostPopup();
-        }
-
         public void UpdateLevelGoal(int id)
         {
             _levelController.UpdateLevelGoal(id);
@@ -106,7 +104,7 @@ namespace Gazeus.DesafioMatch3
         {
             if (!_levelController.CanUpdateLeftMoves())
             {
-                _gameController.ShowLostPopup();
+                ShowLostPopup();
             }
         }
 

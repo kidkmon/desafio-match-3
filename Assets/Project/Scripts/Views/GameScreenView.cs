@@ -70,6 +70,7 @@ namespace Gazeus.DesafioMatch3
         public void OnHomeButtonClicked()
         {
             AudioManager.Instance.PlayClickSound();
+            LogSystem.Instance.LogEndGame(GameManager.Instance.Level);
             HidePopup(_winPopup);
             HidePopup(_losePopup);
             StartTransitionAnimation(() =>
@@ -82,6 +83,7 @@ namespace Gazeus.DesafioMatch3
         public void OnNextLevelClicked()
         {
             AudioManager.Instance.PlayClickSound();
+            LogSystem.Instance.LogEndLevel(GameManager.Instance.Level);
             HidePopup(_winPopup);
             StartTransitionAnimation(() => _onNextLevelCallback?.Invoke(), false);
         }
@@ -92,6 +94,7 @@ namespace Gazeus.DesafioMatch3
             HidePopup(_losePopup);
             GameManager.Instance.DecreaseLife();
             GameManager.Instance.IncreaseLeftMoves();
+            LogSystem.Instance.LogContinueLevel(GameManager.Instance.Level, GameManager.Instance.Life);
             _onContinueLevelCallback?.Invoke();
         }
 
@@ -102,18 +105,15 @@ namespace Gazeus.DesafioMatch3
             _blackCircle.gameObject.SetActive(true);
             sequence.Append(_blackCircle.DOScale(Vector3.one * _blackCircleInitialScale, 1).SetEase(Ease.OutQuad));
             sequence.AppendCallback(() =>
-                {
-                    _winPopup.gameObject.SetActive(false);
-                    _losePopup.gameObject.SetActive(false);
-                    _blackCircle.gameObject.SetActive(!fastEnd);
-                });
+            {
+                _winPopup.gameObject.SetActive(false);
+                _losePopup.gameObject.SetActive(false);
+                _blackCircle.gameObject.SetActive(!fastEnd);
+                onAnimationComplete?.Invoke();
+            });
 
             if (!fastEnd)
             {
-                sequence.AppendCallback(() =>
-                {
-                    onAnimationComplete?.Invoke();
-                });
                 sequence.Join(_blackCircle.DOScale(0, _blackCircleVelocity).SetEase(Ease.OutQuad));
             }
         }

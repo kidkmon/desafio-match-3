@@ -55,6 +55,16 @@ namespace Gazeus.DesafioMatch3
             Log($"End Level: {level}");
         }
 
+        public void LogContinueLevel(int level, int life)
+        {
+            Log($"Continue Level: {level} | Life: {life}");
+        }
+
+        public void LogEndGame(int level)
+        {
+            Log($"End Game reached at level: {level}\n");
+        }
+
         public void LogMatchTile(HashSet<Vector2Int> positions, int scoreGained, bool isTLShapeMatch, bool isClearTileMatch)
         {
             string posStr = string.Join(", ", positions);

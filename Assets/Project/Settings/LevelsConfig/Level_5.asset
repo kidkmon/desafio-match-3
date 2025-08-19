@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Level_5
   m_EditorClassIdentifier: 
   _id: 5
-  _maxMoves: 15
+  _maxMoves: 10
   _goals:
   - TileId: 3
     Quantity: 12
