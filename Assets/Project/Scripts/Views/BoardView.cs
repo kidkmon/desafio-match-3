@@ -82,6 +82,7 @@ namespace Gazeus.DesafioMatch3.Views
 
             return DOVirtual.DelayedCall(0.2f, () =>
             {
+                AudioManager.Instance.PlayBombDestroyedSound();
                 ScoreSystem.Instance.AddScore(totalMatchScore);
             });
         }

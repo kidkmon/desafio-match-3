@@ -45,9 +45,9 @@ namespace Gazeus.DesafioMatch3
 
         #region Event Logs Methods
 
-        public void LogStartLevel(int level)
+        public void LogStartLevel(string difficulty, int level)
         {
-            Log($"Start Level: {level}");
+            Log($"Start Level: {level} | Difficulty: {difficulty}");
         }
 
         public void LogEndLevel(int level)

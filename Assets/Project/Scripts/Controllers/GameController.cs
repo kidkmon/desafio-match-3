@@ -27,17 +27,16 @@ namespace Gazeus.DesafioMatch3.Controllers
             _boardView.TileSwiped -= OnTileSwipe;
         }
 
-        private void Start()
+        #endregion
+
+        public void StartLevel(DifficultyLevel difficulty, int level)
         {
             List<List<Tile>> board = _gameEngine.StartGame();
-
-            GameManager.Instance.SetGameLevel(DifficultyLevel.Easy, 1);
-            DifficultConfig config = EnvironmentConfigs.Instance.DifficultConfigCollection.GetConfigByDifficulty(GameManager.Instance.Difficulty);
+            DifficultConfig config = EnvironmentConfigs.Instance.DifficultConfigCollection.GetConfigByDifficulty(difficulty);
 
             EnvironmentConfigs.Instance.TileAssetCollection.InitializeRandomTiles(config.ColorQuantity);
             _boardView.CreateBoard(board);
         }
-        #endregion
 
         private void AnimateBoard(List<BoardSequence> boardSequences, int index, Action onComplete)
         {
